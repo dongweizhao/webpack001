@@ -24,18 +24,18 @@ module.exports = {
     entry: {
         index: path.resolve(APP_PATH, 'index/js/index.js'),
         login: path.resolve(APP_PATH, 'login/js/login.js'),
-        vendors: ['jquery', 'underscore',path.resolve(RESOURCE_PATH, 'lib/bootstrap/js/bootstrap.js'),path.resolve(RESOURCE_PATH, 'lib/bootstrap/css/bootstrap.css')]
+        common: ['jquery', 'underscore',path.resolve(RESOURCE_PATH, 'lib/bootstrap/js/bootstrap.js'),path.resolve(RESOURCE_PATH, 'lib/bootstrap/css/bootstrap.css')]
     },
     output: {
-     // publicPath: "http://localhost/",
+       // publicPath: "http://localhost/",
         path: BUILD_PATH,
-        filename: "js/[name].js"
+        filename: "[name]/[name].js"
     },
     //enable dev source map
     // devtool: 'eval-source-map',
     plugins: [
-        new ExtractTextPlugin("[name].css"),
-        new CommonsChunkPlugin("vendors", 'vendors.js'),
+        new ExtractTextPlugin("[name]/[name].css"),
+        new CommonsChunkPlugin("common", 'common/common.js'),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
@@ -44,11 +44,11 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title: 'My Index',
-            template: path.resolve(APP_PATH, 'index/template/index.html'),    //html模板路径
+            template: path.resolve(ROOT_PATH, 'index.html'),    //html模板路径
             filename: 'index.html',
             inject: 'body',//插入到body底部
             //chunks这个参数告诉插件要引用entry里面的哪几个入口
-            chunks: ['index', 'vendors'],
+            chunks: ['index', 'common'],
             minify: {    //压缩HTML文件
                 removeComments: true,    //移除HTML中的注释
                 collapseWhitespace: false    //删除空白符与换行符
@@ -56,10 +56,10 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title: 'My Login',
-            template: path.resolve(APP_PATH, 'login/template/login.html'),    //html模板路径,
+            template: path.resolve(ROOT_PATH, 'login.html'),    //html模板路径,
             filename: 'login.html',
             //chunks这个参数告诉插件要引用entry里面的哪几个入口
-            chunks: ['login', 'vendors'],
+            chunks: ['login', 'common'],
             inject: 'body',//插入到body底部
             minify: {    //压缩HTML文件
                 removeComments: true,    //移除HTML中的注释
@@ -72,13 +72,7 @@ module.exports = {
             {test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
            // {test: /\.css$/, loader: "style-loader!css-loader"},
             //图片文件使用 url-loader 来处理，小于8kb的直接转为base64
-            { test: /\.(png|jpg)$/, loader: 'url-loader?limit=10240'},
-            //{ test: /\.(eot|svg|ttf|woff|woff2)$/, loader: "file-loader" },
-            { test: /\.woff$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.woff2$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.ttf$/,  loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
-            { test: /\.eot$/,  loader: "file-loader" },
-            { test: /\.svg$/,  loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
+            { test: /\.(png|jpg|woff|woff2|ttf|eot|svg)$/, loader: 'url-loader?limit=10240&name=images/[name].[ext]'},
             {test: /\.html/, loader: "html"}
         ]
     }
