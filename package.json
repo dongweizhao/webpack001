@@ -1,0 +1,18 @@
+{
+  "name": "webpack001",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "weizhao.dong",
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^1.12.14"
+  },
+  "devDependencies": {
+    "html-tpl-loader": "^1.0.0",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
